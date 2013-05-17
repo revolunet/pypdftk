@@ -54,6 +54,9 @@ out_pdf = pdftk.merge(['/path/to/cover.pdf', generated_pdf])
 
 
 
+## Licence
+This module is released under the permissive [MIT license](http://revolunet.mit-license.org). Your contributions are always welcome.
+
 
  [0]: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
  [1]: http://revolunet.com
