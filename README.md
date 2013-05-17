@@ -7,13 +7,32 @@ Proudly brought to you by the [revolunet][1] team
 
 ## Features
 
- - `fill_form` : fill a PDF with given data
- - `merge` : merge multiple PDFs into one
- - `split` : split a single PDF in many pages
- - `gen_xfdf` : generate a XFDF file suited for filling PDF forms
- - `get_num_pages` : return number of pages for a given PDF
+### `fill_form`
+Fill a PDF with given data and returns the output PDF path
+ - `pdf_path` : input PDF
+ - `datas` : dictionnary of fielf names / values
+ - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
+ - `flatten` (default=True) : flatten the final PDF
+ 
+### `concat`
+Merge multiple PDFs into one single file and returns the output PDF path
+ - `files` : list of PDF files to concatenate
+ - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
 
-By default, all the output use temporary files, and you can override this.
+### `split`
+Split a single PDF in many pages and return a list of pages paths
+ - `pdf_path` : input PDF
+ - `out_dir` (default=auto) : output PDFs dir. will use tempfile if not provided
+
+### `gen_xfdf`
+Generate a XFDF file suited for filling PDF forms and return the generated XFDF file path
+ - `datas` : dictionnary of datas
+ 
+### `get_num_pages`
+Return the number of pages for a given PDF
+ - `pdf_path` : input PDF file
+
+
 
 
 ## Example
