@@ -24,6 +24,8 @@ Split a single PDF in many pages and return a list of pages paths
  - `pdf_path` : input PDF
  - `out_dir` (default=auto) : output PDFs dir. will use tempfile if not provided
 
+**warning** if you give a out_dir parameter, ensure its empty, or the split function may destroy your files and return incorrect results.
+
 ### `gen_xfdf`
 Generate a XFDF file suited for filling PDF forms and return the generated XFDF file path
  - `datas` : dictionnary of datas
