@@ -2,7 +2,7 @@
 from distutils.core import setup
 
 setup(
-    name='PyPdfTk',
+    name='pypdftk',
     description='''Python wrapper for PDFTK''',
     long_description=open('README.md').read(),
     version='0.1dev',
