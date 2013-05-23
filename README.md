@@ -1,4 +1,4 @@
-pdftk.py
+pypdftk
 ========
 
 Python module to drive the awesome [pdftk][0] binary.
@@ -43,15 +43,15 @@ Fill a PDF model and add a cover page :
 
 ```python
 
-import pdftk
+import pypdftk
 
 datas = {
     'firstname': 'Julien',
     'company': 'revolunet',
     'price': 42
 }
-generated_pdf = pdftk.fill_form('/path/to/model.pdf', datas)
-out_pdf = pdftk.merge(['/path/to/cover.pdf', generated_pdf])
+generated_pdf = pypdftk.fill_form('/path/to/model.pdf', datas)
+out_pdf = pypdftk.merge(['/path/to/cover.pdf', generated_pdf])
 ```
 
 
