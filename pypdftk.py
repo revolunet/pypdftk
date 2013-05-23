@@ -1,6 +1,6 @@
 # -*- encoding: UTF-8 -*-
 
-''' PyPdfTk
+''' pypdftk
 
 Python module to drive the awesome pdftk binary.
 See http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/

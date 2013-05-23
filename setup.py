@@ -9,7 +9,7 @@ setup(
     author='Julien Bouquillon',
     author_email='julien@revolunet.com',
     url='http://github.com/revolunet/pypdftk',
-    packages=['pypdftk'],
+    packages=[],
     classifiers=['Development Status :: 4 - Beta',
                  'Environment :: Web Environment',
                  'Intended Audience :: Developers',
