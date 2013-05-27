@@ -1,3 +1,4 @@
 include README.md
 include pypdftk.py
+include licence.txt
 exclude *.pyc
