@@ -5,7 +5,7 @@ setup(
     name='pypdftk',
     description='''Python wrapper for PDFTK''',
     long_description=open('README.md').read(),
-    version='0.2',
+    version='0.3',
     author='Julien Bouquillon',
     author_email='julien@revolunet.com',
     url='http://github.com/revolunet/pypdftk',
