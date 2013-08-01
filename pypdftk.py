@@ -12,7 +12,10 @@ import subprocess
 import tempfile
 import shutil
 
-PDFTK_PATH = '/usr/bin/pdftk'
+if os.getenv('PDFTK_PATH'):
+    PDFTK_PATH = os.getenv('PDFTK_PATH')
+else:
+    PDFTK_PATH = '/usr/bin/pdftk'
 
 
 def check_output(*popenargs, **kwargs):
