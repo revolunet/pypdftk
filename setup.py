@@ -14,7 +14,7 @@ setup(
     classifiers=['Development Status :: 4 - Beta',
                  'Environment :: Web Environment',
                  'Intended Audience :: Developers',
-                 'License :: OSI Approved :: BSD',
+                 'License :: OSI Approved :: BSD License',
                  'Operating System :: OS Independent',
                  'Programming Language :: Python',
                  'Topic :: Utilities'],
