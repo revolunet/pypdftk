@@ -51,7 +51,7 @@ datas = {
     'price': 42
 }
 generated_pdf = pypdftk.fill_form('/path/to/model.pdf', datas)
-out_pdf = pypdftk.merge(['/path/to/cover.pdf', generated_pdf])
+out_pdf = pypdftk.concat(['/path/to/cover.pdf', generated_pdf])
 ```
 
 
