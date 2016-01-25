@@ -155,7 +155,6 @@ def gen_xfdf(datas={}):
     f.close()
     return out_file
 
-
 def replace_page(pdf_path, page_number, pdf_to_insert_path):
     '''
     Replace a page in a PDF (pdf_path) by the PDF pointed by pdf_to_insert_path.
@@ -170,7 +169,6 @@ def replace_page(pdf_path, page_number, pdf_to_insert_path):
     run_command(args)
     shutil.copy(output_temp, pdf_path)
     os.remove(output_temp)
-
 
 def stamp(pdf_path, stamp_pdf_path, output_pdf_path=None):
     '''
