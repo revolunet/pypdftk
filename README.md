@@ -34,7 +34,11 @@ Generate a XFDF file suited for filling PDF forms and return the generated XFDF 
 Return the number of pages for a given PDF
  - `pdf_path` : input PDF file
 
-
+### `replace_page`
+Replace a page in a PDF (pdf_path) by the PDF pointed by pdf_to_insert_path.
+ - pdf_path is the PDF that will have its page replaced.
+ - page_number is the number of the page in pdf_path to be replaced. It is 1-based.
+ - pdf_to_insert_path is the PDF that will be inserted at the old page.
 
 
 ## Example
