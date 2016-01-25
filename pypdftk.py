@@ -130,3 +130,17 @@ def gen_xfdf(datas={}):
     f.close()
     return out_file
 
+def replace_page(pdf_path, page_number, pdf_to_insert_path):
+    """
+    Replace a page in a PDF (pdf_path) by the PDF pointed by pdf_to_insert_path.
+    page_number is the number of the page in pdf_path to be replaced. It is 1-based.
+    """
+    A = 'A=' + pdf_path
+    B = 'B=' + pdf_to_insert_path
+    lower_bound = 'A1-' + str(page_number - 1)
+    upper_bound = 'A' + str(page_number + 1) + '-end'
+    output_temp = tempfile.mktemp(suffix='.pdf')
+    args = (PDFTK_PATH, A, B, 'cat', lower_bound, 'B', upper_bound, 'output', output_temp)
+    run_command(args)
+    shutil.copy(output_temp, pdf_path)
+    os.remove(output_temp)
