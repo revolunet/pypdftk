@@ -41,8 +41,7 @@ Replace a page in a PDF (pdf_path) by the PDF pointed by pdf_to_insert_path.
  - `pdf_to_insert_path` is the PDF that will be inserted at the old page.
  
 ### `stamp`
-Applies a stamp (from `stamp_pdf_path`) to the PDF file in `pdf_path`. Useful for watermark purposes.
-If not `output_pdf_path` is provided, it returns a temporary file with the result PDF.
+Applies a stamp (from `stamp_pdf_path`) to the PDF file in `pdf_path`. If no `output_pdf_path` is provided, it returns a temporary file with the result PDF.
 
 
 ## Example
