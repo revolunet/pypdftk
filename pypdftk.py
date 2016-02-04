@@ -131,10 +131,10 @@ def gen_xfdf(datas={}):
     return out_file
 
 def replace_page(pdf_path, page_number, pdf_to_insert_path):
-    """
+    '''
     Replace a page in a PDF (pdf_path) by the PDF pointed by pdf_to_insert_path.
     page_number is the number of the page in pdf_path to be replaced. It is 1-based.
-    """
+    '''
     A = 'A=' + pdf_path
     B = 'B=' + pdf_to_insert_path
     lower_bound = 'A1-' + str(page_number - 1)
@@ -144,3 +144,13 @@ def replace_page(pdf_path, page_number, pdf_to_insert_path):
     run_command(args)
     shutil.copy(output_temp, pdf_path)
     os.remove(output_temp)
+    
+def stamp(pdf_path, stamp_pdf_path, output_pdf_path=None):
+    '''
+    Applies a stamp (from stamp_pdf_path) to the PDF file in pdf_path. Useful for watermark purposes.
+    If not output_pdf_path is provided, it returns a temporary file with the result PDF.
+    '''
+    output = output_pdf_path or tempfile.mktemp(suffix='.pdf')
+    args = [PDFTK_PATH, pdf_path, 'multistamp', stamp_pdf_path, 'output', output]
+    run_command(args)
+    return output
