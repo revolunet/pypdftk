@@ -16,6 +16,8 @@ import itertools
 
 log = logging.getLogger(__name__)
 
+log = logging.getLogger(__name__)
+
 if os.getenv('PDFTK_PATH'):
     PDFTK_PATH = os.getenv('PDFTK_PATH')
 else:
@@ -42,6 +44,11 @@ def run_command(command, shell=False):
     ''' run a system command and yield output '''
     p = check_output(command, shell=shell)
     return p.split(b'\n')
+
+try:
+    run_command([PDFTK_PATH])
+except OSError:
+    logging.warning('pdftk test call failed (PDFTK_PATH=%r).', PDFTK_PATH)
 
 try:
     run_command([PDFTK_PATH])
