@@ -180,7 +180,6 @@ def stamp(pdf_path, stamp_pdf_path, output_pdf_path=None):
     run_command(args)
     return output
 
-
 def pdftk_cmd_util(pdf_path, action="compress",out_file=None, flatten=True):
     '''
     :type action: should valid action, in string format. Eg: "uncompress"
