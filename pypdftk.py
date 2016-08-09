@@ -53,6 +53,7 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
     '''
     cleanOnFail = False
     tmp_fdf = gen_xfdf(datas)
+    handle = None
     if not out_file:
         cleanOnFail = True
         handle, out_file = tempfile.mkstemp()
@@ -66,6 +67,9 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
         if cleanOnFail:
             os.remove(tmp_fdf)
         raise
+    finally:
+        if handle:
+            os.close(handle)
     return out_file
 
 
@@ -144,7 +148,7 @@ def replace_page(pdf_path, page_number, pdf_to_insert_path):
     run_command(args)
     shutil.copy(output_temp, pdf_path)
     os.remove(output_temp)
-    
+
 def stamp(pdf_path, stamp_pdf_path, output_pdf_path=None):
     '''
     Applies a stamp (from stamp_pdf_path) to the PDF file in pdf_path. Useful for watermark purposes.
