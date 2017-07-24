@@ -77,7 +77,6 @@ out_pdf = pypdftk.concat(['/path/to/cover.pdf', generated_pdf])
 
 By default, path is `/usr/bin/pdftk`, but you can override it with the `PDFTK_PATH` environment variable
 
-
 ## Licence
 This module is released under the permissive [MIT license](http://revolunet.mit-license.org). Your contributions are always welcome.
 
