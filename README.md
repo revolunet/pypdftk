@@ -44,6 +44,15 @@ Replace a page in a PDF (pdf_path) by the PDF pointed by pdf_to_insert_path.
 Applies a stamp (from `stamp_pdf_path`) to the PDF file in `pdf_path`. If no `output_pdf_path` is provided, it returns a temporary file with the result PDF.
 
 
+### `[compress | uncompress]`
+    These are only useful when you want to edit PDF code in a text
+    editor like vim or emacs.  Remove PDF page stream compression by
+    applying the uncompress filter. Use the compress filter to
+    restore compression.
+ - `pdf_path` : input PDF file
+ - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
+ - `flatten` (default=True) : flatten the final PDF
+
 ## Example
 
 Fill a PDF model and add a cover page :
