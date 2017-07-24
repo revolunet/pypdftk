@@ -70,6 +70,9 @@ generated_pdf = pypdftk.fill_form('/path/to/model.pdf', datas)
 out_pdf = pypdftk.concat(['/path/to/cover.pdf', generated_pdf])
 ```
 
+## pdftk path
+
+By default, path is `/usr/bin/pdftk`, but you can override it with the `PDFTK_PATH` environment variable 
 
 
 ## Licence
