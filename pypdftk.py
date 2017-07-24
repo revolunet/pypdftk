@@ -1,10 +1,11 @@
 # -*- encoding: UTF-8 -*-
 
 ''' pypdftk
-
 Python module to drive the awesome pdftk binary.
-See http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
+Documentation at http://github.com/revolunet/pypdftk
+
+PdfTk is from http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit
 '''
 
 import logging
@@ -16,15 +17,12 @@ import itertools
 
 log = logging.getLogger(__name__)
 
-log = logging.getLogger(__name__)
-
 if os.getenv('PDFTK_PATH'):
     PDFTK_PATH = os.getenv('PDFTK_PATH')
 else:
     PDFTK_PATH = '/usr/bin/pdftk'
     if not os.path.isfile(PDFTK_PATH):
         PDFTK_PATH = 'pdftk'
-
 
 def check_output(*popenargs, **kwargs):
     if 'stdout' in kwargs:
@@ -39,7 +37,6 @@ def check_output(*popenargs, **kwargs):
         raise subprocess.CalledProcessError(retcode, cmd)
     return output
 
-
 def run_command(command, shell=False):
     ''' run a system command and yield output '''
     p = check_output(command, shell=shell)
@@ -50,19 +47,12 @@ try:
 except OSError:
     logging.warning('pdftk test call failed (PDFTK_PATH=%r).', PDFTK_PATH)
 
-try:
-    run_command([PDFTK_PATH])
-except OSError:
-    logging.warning('pdftk test call failed (PDFTK_PATH=%r).', PDFTK_PATH)
-
-
 def get_num_pages(pdf_path):
     ''' return number of pages in a given PDF file '''
     for line in run_command([PDFTK_PATH, pdf_path, 'dump_data']):
         if line.lower().startswith(b'numberofpages'):
             return int(line.split(b':')[1])
     return 0
-
 
 def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
     '''
@@ -96,9 +86,7 @@ def dump_data_fields(pdf_path):
     '''
     cmd = "%s %s dump_data_fields" % (PDFTK_PATH, pdf_path)
     field_data = map(lambda x: x.split(': ', 1), run_command(cmd, True))
-
     fields = [list(group) for k, group in itertools.groupby(field_data, lambda x: len(x) == 1) if not k]
-
     return map(dict, fields)
 
 def concat(files, out_file=None):
@@ -123,7 +111,6 @@ def concat(files, out_file=None):
         raise
     return out_file
 
-
 def split(pdf_path, out_dir=None):
     '''
         Split a single PDF file into pages.
@@ -143,7 +130,6 @@ def split(pdf_path, out_dir=None):
     out_files = os.listdir(out_dir)
     out_files.sort()
     return [os.path.join(out_dir, filename) for filename in out_files]
-
 
 def gen_xfdf(datas={}):
     ''' Generates a temp XFDF file suited for fill_form function, based on dict input data '''
@@ -219,7 +205,6 @@ def pdftk_cmd_util(pdf_path, action="compress",out_file=None, flatten=True):
             os.close(handle)
     return out_file
 
-
 def compress(pdf_path, out_file=None, flatten=True):
     '''
     These are only useful when you want to edit PDF code in a text
@@ -234,7 +219,6 @@ def compress(pdf_path, out_file=None, flatten=True):
     '''
 
     return pdftk_cmd_util(pdf_path, "compress", out_file, flatten)
-
 
 def uncompress(pdf_path, out_file=None, flatten=True):
     '''
