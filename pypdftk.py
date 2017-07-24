@@ -168,3 +168,68 @@ def stamp(pdf_path, stamp_pdf_path, output_pdf_path=None):
     args = [PDFTK_PATH, pdf_path, 'multistamp', stamp_pdf_path, 'output', output]
     run_command(args)
     return output
+
+def pdftk_cmd_util(pdf_path, action="compress",out_file=None, flatten=True):
+    '''
+    :type action: should valid action, in string format. Eg: "uncompress"
+    :param pdf_path: input PDF file
+    :param out_file: (default=auto) : output PDF path. will use tempfile if not provided
+    :param flatten: (default=True) : flatten the final PDF
+    :return: name of the output file.
+    '''
+    actions = ["compress", "uncompress"]
+    assert action in actions, "Unknown action. Failed to perform given action '%s'." % action
+
+    handle = None
+    cleanOnFail = False
+    if not out_file:
+        cleanOnFail = True
+        handle, out_file = tempfile.mkstemp()
+
+    cmd = "%s %s output %s %s" % (PDFTK_PATH, pdf_path, out_file, action)
+
+    if flatten:
+        cmd += ' flatten'
+    try:
+        run_command(cmd, True)
+    except:
+        if cleanOnFail:
+            os.remove(out_file)
+        raise
+    finally:
+        if handle:
+            os.close(handle)
+    return out_file
+
+
+
+def compress(pdf_path, out_file=None, flatten=True):
+    '''
+    These are only useful when you want to edit PDF code in a text
+    editor like vim or emacs.  Remove PDF page stream compression by
+    applying the uncompress filter. Use the compress filter to
+    restore compression.
+
+    :param pdf_path: input PDF file
+    :param out_file: (default=auto) : output PDF path. will use tempfile if not provided
+    :param flatten: (default=True) : flatten the final PDF
+    :return: name of the output file.
+    '''
+
+    return pdftk_cmd_util(pdf_path, "compress", out_file, flatten)
+
+
+def uncompress(pdf_path, out_file=None, flatten=True):
+    '''
+    These are only useful when you want to edit PDF code in a text
+    editor like vim or emacs.  Remove PDF page stream compression by
+    applying the uncompress filter. Use the compress filter to
+    restore compression.
+
+    :param pdf_path: input PDF file
+    :param out_file: (default=auto) : output PDF path. will use tempfile if not provided
+    :param flatten: (default=True) : flatten the final PDF
+    :return: name of the output file.
+    '''
+
+    return pdftk_cmd_util(pdf_path, "uncompress", out_file, flatten)
