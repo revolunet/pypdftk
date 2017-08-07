@@ -12,6 +12,7 @@ import os
 import subprocess
 import tempfile
 import shutil
+import itertools
 
 log = logging.getLogger(__name__)
 
@@ -82,6 +83,16 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
             os.close(handle)
     return out_file
 
+def dump_data_fields(pdf_path):
+    '''
+        Return list of dicts of all fields in a PDF.
+    '''
+    cmd = "%s %s dump_data_fields" % (PDFTK_PATH, pdf_path)
+    field_data = map(lambda x: x.split(': ', 1), run_command(cmd, True))
+
+    fields = [list(group) for k, group in itertools.groupby(field_data, lambda x: len(x) == 1) if not k]
+
+    return map(dict, fields)
 
 def concat(files, out_file=None):
     '''
