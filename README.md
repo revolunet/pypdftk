@@ -52,6 +52,10 @@ Applies a stamp (from `stamp_pdf_path`) to the PDF file in `pdf_path`. If no `ou
  - `pdf_path` : input PDF file
  - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
  - `flatten` (default=True) : flatten the final PDF
+ 
+### `dump_data_fields`
+Read PDF and output form field statistics.
+ - `pdf_path` : input PDF file
 
 ## Example
 
