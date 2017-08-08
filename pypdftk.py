@@ -40,7 +40,7 @@ def check_output(*popenargs, **kwargs):
 def run_command(command, shell=False):
     ''' run a system command and yield output '''
     p = check_output(command, shell=shell)
-    return p.split('\n')
+    return p.split(b'\n')
 
 try:
     run_command([PDFTK_PATH])
@@ -51,8 +51,8 @@ except OSError:
 def get_num_pages(pdf_path):
     ''' return number of pages in a given PDF file '''
     for line in run_command([PDFTK_PATH, pdf_path, 'dump_data']):
-        if line.lower().startswith('numberofpages'):
-            return int(line.split(':')[1])
+        if line.lower().startswith(b'numberofpages'):
+            return int(line.split(b':')[1])
     return 0
 
 
@@ -131,8 +131,8 @@ def gen_xfdf(datas={}):
     ''' Generates a temp XFDF file suited for fill_form function, based on dict input data '''
     fields = []
     for key, value in datas.items():
-        fields.append(u"""<field name="%s"><value>%s</value></field>""" % (key, value))
-    tpl = u"""<?xml version="1.0" encoding="UTF-8"?>
+        fields.append("""<field name="%s"><value>%s</value></field>""" % (key, value))
+    tpl = """<?xml version="1.0" encoding="UTF-8"?>
     <xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve">
         <fields>
             %s
@@ -140,9 +140,10 @@ def gen_xfdf(datas={}):
     </xfdf>""" % "\n".join(fields)
     handle, out_file = tempfile.mkstemp()
     f = open(out_file, 'w')
-    f.write(tpl.encode('UTF-8'))
+    f.write(str(tpl.encode('UTF-8')))
     f.close()
     return out_file
+
 
 def replace_page(pdf_path, page_number, pdf_to_insert_path):
     '''
@@ -159,6 +160,7 @@ def replace_page(pdf_path, page_number, pdf_to_insert_path):
     shutil.copy(output_temp, pdf_path)
     os.remove(output_temp)
 
+
 def stamp(pdf_path, stamp_pdf_path, output_pdf_path=None):
     '''
     Applies a stamp (from stamp_pdf_path) to the PDF file in pdf_path. Useful for watermark purposes.
@@ -168,6 +170,7 @@ def stamp(pdf_path, stamp_pdf_path, output_pdf_path=None):
     args = [PDFTK_PATH, pdf_path, 'multistamp', stamp_pdf_path, 'output', output]
     run_command(args)
     return output
+
 
 def pdftk_cmd_util(pdf_path, action="compress",out_file=None, flatten=True):
     '''
@@ -200,7 +203,6 @@ def pdftk_cmd_util(pdf_path, action="compress",out_file=None, flatten=True):
         if handle:
             os.close(handle)
     return out_file
-
 
 
 def compress(pdf_path, out_file=None, flatten=True):
