@@ -8,9 +8,9 @@ See http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 '''
 
 import os
+import shutil
 import subprocess
 import tempfile
-import shutil
 
 if os.getenv('PDFTK_PATH'):
     PDFTK_PATH = os.getenv('PDFTK_PATH')
@@ -130,6 +130,7 @@ def gen_xfdf(datas={}):
     f.close()
     return out_file
 
+
 def replace_page(pdf_path, page_number, pdf_to_insert_path):
     '''
     Replace a page in a PDF (pdf_path) by the PDF pointed by pdf_to_insert_path.
@@ -137,14 +138,28 @@ def replace_page(pdf_path, page_number, pdf_to_insert_path):
     '''
     A = 'A=' + pdf_path
     B = 'B=' + pdf_to_insert_path
-    lower_bound = 'A1-' + str(page_number - 1)
-    upper_bound = 'A' + str(page_number + 1) + '-end'
     output_temp = tempfile.mktemp(suffix='.pdf')
-    args = (PDFTK_PATH, A, B, 'cat', lower_bound, 'B', upper_bound, 'output', output_temp)
+
+    if page_number == 1:
+        upper_bound = 'A' + str(page_number + 1) + '-end'
+        args = (
+            PDFTK_PATH, A, B, 'cat', 'B', upper_bound, 'output', output_temp)
+    elif page_number == get_num_pages(pdf_path):
+        lower_bound = 'A1-' + str(page_number - 1)
+        args = (
+            PDFTK_PATH, A, B, 'cat', lower_bound, 'output', output_temp)
+    else:
+        lower_bound = 'A1-' + str(page_number - 1)
+        upper_bound = 'A' + str(page_number + 1) + '-end'
+        args = (
+            PDFTK_PATH, A, B, 'cat', lower_bound, 'B', upper_bound, 'output',
+            output_temp)
+
     run_command(args)
     shutil.copy(output_temp, pdf_path)
     os.remove(output_temp)
-    
+
+
 def stamp(pdf_path, stamp_pdf_path, output_pdf_path=None):
     '''
     Applies a stamp (from stamp_pdf_path) to the PDF file in pdf_path. Useful for watermark purposes.
