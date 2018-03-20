@@ -4,11 +4,12 @@ from tempfile import mkdtemp
 
 import pypdftk
 
-class TestPyPDFTK(unittest.TestCase):
-    test_file_01 = 'test_files/python-guide.pdf'
+TEST_PDF_PATH = 'test_files/python-guide.pdf'
 
+
+class TestPyPDFTK(unittest.TestCase):
     def test_get_num_pages(self):
-        num = pypdftk.get_num_pages(self.test_file_01)
+        num = pypdftk.get_num_pages(TEST_PDF_PATH)
         self.assertEqual(num, 129)
 
     @unittest.skip('Not implemented yet')
@@ -19,15 +20,18 @@ class TestPyPDFTK(unittest.TestCase):
         pass
 
     def test_split(self):
-        paths = pypdftk.split(self.test_file_01)
-        self.assertEqual(len(paths), 130)
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        paths = pypdftk.split(TEST_PDF_PATH)
+        self.assertEqual(len(paths) - 1, total_pages)
         self.assertTrue('doc_data.txt' in paths[0])
         for p in paths:
             self.assertTrue(os.path.exists(p))
 
     def test_split_output_dir(self):
         output_dir = mkdtemp()
-        paths = pypdftk.split(self.test_file_01, out_dir=output_dir)
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        paths = pypdftk.split(TEST_PDF_PATH, out_dir=output_dir)
+        self.assertEqual(len(paths) - 1, total_pages)
         for p in paths:
             out_path = os.path.join(output_dir, os.path.basename(p))
             self.assertTrue(out_path)
@@ -37,17 +41,23 @@ class TestPyPDFTK(unittest.TestCase):
         pass
 
     def test_replace_page_at_begin(self):
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
         pdf_to_insert = 'test_files/page_01.pdf'
-        pypdftk.replace_page(self.test_file_01, 1, pdf_to_insert)
+        pypdftk.replace_page(TEST_PDF_PATH, 1, pdf_to_insert)
+        self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_PATH))
 
     def test_replace_page_at_middle(self):
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
         pdf_to_insert = 'test_files/page_01.pdf'
-        pypdftk.replace_page(self.test_file_01, 3, pdf_to_insert)
+        pypdftk.replace_page(TEST_PDF_PATH, 3, pdf_to_insert)
+        self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_PATH))
 
     def test_replace_page_at_end(self):
-        last_page = pypdftk.get_num_pages(self.test_file_01)
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        last_page = pypdftk.get_num_pages(TEST_PDF_PATH)
         pdf_to_insert = 'test_files/page_01.pdf'
-        pypdftk.replace_page(self.test_file_01, last_page, pdf_to_insert)
+        pypdftk.replace_page(TEST_PDF_PATH, last_page, pdf_to_insert)
+        self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_PATH))
 
     @unittest.skip('Not implemented yet')
     def test_stamp(self):

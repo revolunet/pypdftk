@@ -140,15 +140,14 @@ def replace_page(pdf_path, page_number, pdf_to_insert_path):
     B = 'B=' + pdf_to_insert_path
     output_temp = tempfile.mktemp(suffix='.pdf')
 
-    if page_number == 1:
+    if page_number == 1:  # At begin
         upper_bound = 'A' + str(page_number + 1) + '-end'
         args = (
             PDFTK_PATH, A, B, 'cat', 'B', upper_bound, 'output', output_temp)
-    elif page_number == get_num_pages(pdf_path):
+    elif page_number == get_num_pages(pdf_path):  # At end
         lower_bound = 'A1-' + str(page_number - 1)
-        args = (
-            PDFTK_PATH, A, B, 'cat', lower_bound, 'output', output_temp)
-    else:
+        args = (PDFTK_PATH, A, B, 'cat', lower_bound, 'B', 'output', output_temp)
+    else:  # At middle
         lower_bound = 'A1-' + str(page_number - 1)
         upper_bound = 'A' + str(page_number + 1) + '-end'
         args = (
