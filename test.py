@@ -87,6 +87,16 @@ class TestPyPDFTK(unittest.TestCase):
         self.assertEqual(pypdftk.get_num_pages(TEST_PDF_01_PATH),
                          pypdftk.get_num_pages(temp_pdf))
 
+    def test_compress(self):
+        temp_compressed_pdf = tempfile.mktemp(prefix='compress', suffix='.pdf')
+        pypdftk.compress(TEST_PDF_01_PATH, temp_compressed_pdf)
+        self.assertTrue(os.path.exists(temp_compressed_pdf))
+
+    def test_uncompress(self):
+        temp_uncompressed_pdf = tempfile.mktemp(
+            prefix='uncompress', suffix='.pdf')
+        pypdftk.uncompress(TEST_PDF_01_PATH, temp_uncompressed_pdf)
+        self.assertTrue(os.path.exists(temp_uncompressed_pdf))
 
 if __name__ == '__main__':
     unittest.main()
