@@ -7,15 +7,22 @@ See http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 '''
 
+import logging
 import os
 import shutil
 import subprocess
 import tempfile
+import itertools
+
+log = logging.getLogger(__name__)
+
 
 if os.getenv('PDFTK_PATH'):
     PDFTK_PATH = os.getenv('PDFTK_PATH')
 else:
     PDFTK_PATH = '/usr/bin/pdftk'
+    if not os.path.isfile(PDFTK_PATH):
+        PDFTK_PATH = 'pdftk'
 
 
 def check_output(*popenargs, **kwargs):
@@ -37,6 +44,11 @@ def run_command(command, shell=False):
     p = check_output(command, shell=shell)
     return p.split('\n')
 
+try:
+    run_command([PDFTK_PATH])
+except OSError:
+    logging.warning('pdftk test call failed (PDFTK_PATH=%r).', PDFTK_PATH)
+
 
 def get_num_pages(pdf_path):
     ''' return number of pages in a given PDF file '''
@@ -53,6 +65,7 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
     '''
     cleanOnFail = False
     tmp_fdf = gen_xfdf(datas)
+    handle = None
     if not out_file:
         cleanOnFail = True
         handle, out_file = tempfile.mkstemp()
@@ -66,8 +79,21 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
         if cleanOnFail:
             os.remove(tmp_fdf)
         raise
+    finally:
+        if handle:
+            os.close(handle)
     return out_file
 
+def dump_data_fields(pdf_path):
+    '''
+        Return list of dicts of all fields in a PDF.
+    '''
+    cmd = "%s %s dump_data_fields" % (PDFTK_PATH, pdf_path)
+    field_data = map(lambda x: x.split(': ', 1), run_command(cmd, True))
+
+    fields = [list(group) for k, group in itertools.groupby(field_data, lambda x: len(x) == 1) if not k]
+
+    return map(dict, fields)
 
 def concat(files, out_file=None):
     '''
@@ -168,3 +194,68 @@ def stamp(pdf_path, stamp_pdf_path, output_pdf_path=None):
     args = [PDFTK_PATH, pdf_path, 'multistamp', stamp_pdf_path, 'output', output]
     run_command(args)
     return output
+
+def pdftk_cmd_util(pdf_path, action="compress",out_file=None, flatten=True):
+    '''
+    :type action: should valid action, in string format. Eg: "uncompress"
+    :param pdf_path: input PDF file
+    :param out_file: (default=auto) : output PDF path. will use tempfile if not provided
+    :param flatten: (default=True) : flatten the final PDF
+    :return: name of the output file.
+    '''
+    actions = ["compress", "uncompress"]
+    assert action in actions, "Unknown action. Failed to perform given action '%s'." % action
+
+    handle = None
+    cleanOnFail = False
+    if not out_file:
+        cleanOnFail = True
+        handle, out_file = tempfile.mkstemp()
+
+    cmd = "%s %s output %s %s" % (PDFTK_PATH, pdf_path, out_file, action)
+
+    if flatten:
+        cmd += ' flatten'
+    try:
+        run_command(cmd, True)
+    except:
+        if cleanOnFail:
+            os.remove(out_file)
+        raise
+    finally:
+        if handle:
+            os.close(handle)
+    return out_file
+
+
+
+def compress(pdf_path, out_file=None, flatten=True):
+    '''
+    These are only useful when you want to edit PDF code in a text
+    editor like vim or emacs.  Remove PDF page stream compression by
+    applying the uncompress filter. Use the compress filter to
+    restore compression.
+
+    :param pdf_path: input PDF file
+    :param out_file: (default=auto) : output PDF path. will use tempfile if not provided
+    :param flatten: (default=True) : flatten the final PDF
+    :return: name of the output file.
+    '''
+
+    return pdftk_cmd_util(pdf_path, "compress", out_file, flatten)
+
+
+def uncompress(pdf_path, out_file=None, flatten=True):
+    '''
+    These are only useful when you want to edit PDF code in a text
+    editor like vim or emacs.  Remove PDF page stream compression by
+    applying the uncompress filter. Use the compress filter to
+    restore compression.
+
+    :param pdf_path: input PDF file
+    :param out_file: (default=auto) : output PDF path. will use tempfile if not provided
+    :param flatten: (default=True) : flatten the final PDF
+    :return: name of the output file.
+    '''
+
+    return pdftk_cmd_util(pdf_path, "uncompress", out_file, flatten)

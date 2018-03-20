@@ -44,6 +44,19 @@ Replace a page in a PDF (pdf_path) by the PDF pointed by pdf_to_insert_path.
 Applies a stamp (from `stamp_pdf_path`) to the PDF file in `pdf_path`. If no `output_pdf_path` is provided, it returns a temporary file with the result PDF.
 
 
+### `[compress | uncompress]`
+    These are only useful when you want to edit PDF code in a text
+    editor like vim or emacs.  Remove PDF page stream compression by
+    applying the uncompress filter. Use the compress filter to
+    restore compression.
+ - `pdf_path` : input PDF file
+ - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
+ - `flatten` (default=True) : flatten the final PDF
+ 
+### `dump_data_fields`
+Read PDF and output form field statistics.
+ - `pdf_path` : input PDF file
+
 ## Example
 
 Fill a PDF model and add a cover page :
@@ -61,6 +74,9 @@ generated_pdf = pypdftk.fill_form('/path/to/model.pdf', datas)
 out_pdf = pypdftk.concat(['/path/to/cover.pdf', generated_pdf])
 ```
 
+## pdftk path
+
+By default, path is `/usr/bin/pdftk`, but you can override it with the `PDFTK_PATH` environment variable 
 
 
 ## Licence
