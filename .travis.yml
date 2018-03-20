@@ -1,0 +1,6 @@
+language: python
+script: pytest test.py
+install:
+  - sudo apt-get update
+  - sudo apt-get install pdftk
+  - pdftk --version
