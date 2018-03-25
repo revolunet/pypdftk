@@ -3,7 +3,7 @@ pypdftk
 
 Python module to drive the awesome [pdftk][0] binary.
 
-Proudly brought to you by the [revolunet][1] team
+Proudly brought to you by the [revolunet][1] team and [awesome contributors](https://github.com/revolunet/pypdftk/graphs/contributors)
 
 <img src="https://travis-ci.org/yguarata/pypdftk.svg?branch=master"/>
 
@@ -53,7 +53,7 @@ Applies a stamp (from `stamp_pdf_path`) to the PDF file in `pdf_path`. If no `ou
  - `pdf_path` : input PDF file
  - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
  - `flatten` (default=True) : flatten the final PDF
- 
+
 ### `dump_data_fields`
 Read PDF and output form field statistics.
  - `pdf_path` : input PDF file
@@ -82,6 +82,7 @@ out_pdf = pypdftk.concat(['/path/to/cover.pdf', generated_pdf])
 ## pdftk path
 
 By default, path is `/usr/bin/pdftk`, but you can override it with the `PDFTK_PATH` environment variable
+
 
 ## Licence
 This module is released under the permissive [MIT license](http://revolunet.mit-license.org). Your contributions are always welcome.
