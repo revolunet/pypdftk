@@ -3,7 +3,7 @@ pypdftk
 
 Python module to drive the awesome [pdftk][0] binary.
 
-Proudly brought to you by the [revolunet][1] team
+Proudly brought to you by the [revolunet][1] team and [awesome contributors](https://github.com/revolunet/pypdftk/graphs/contributors)
 
 <img src="https://travis-ci.org/yguarata/pypdftk.svg?branch=master"/>
 
@@ -15,7 +15,7 @@ Fill a PDF with given data and returns the output PDF path
  - `datas` : dictionnary of fielf names / values
  - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
  - `flatten` (default=True) : flatten the final PDF
- 
+
 ### `concat`
 Merge multiple PDFs into one single file and returns the output PDF path
  - `files` : list of PDF files to concatenate
@@ -31,7 +31,7 @@ Split a single PDF in many pages and return a list of pages paths
 ### `gen_xfdf`
 Generate a XFDF file suited for filling PDF forms and return the generated XFDF file path
  - `datas` : dictionnary of datas
- 
+
 ### `get_num_pages`
 Return the number of pages for a given PDF
  - `pdf_path` : input PDF file
@@ -41,7 +41,7 @@ Replace a page in a PDF (pdf_path) by the PDF pointed by pdf_to_insert_path.
  - `pdf_path` is the PDF that will have its page replaced.
  - `page_number` is the number of the page in pdf_path to be replaced. It is 1-based.
  - `pdf_to_insert_path` is the PDF that will be inserted at the old page.
- 
+
 ### `stamp`
 Applies a stamp (from `stamp_pdf_path`) to the PDF file in `pdf_path`. If no `output_pdf_path` is provided, it returns a temporary file with the result PDF.
 
@@ -54,7 +54,7 @@ Applies a stamp (from `stamp_pdf_path`) to the PDF file in `pdf_path`. If no `ou
  - `pdf_path` : input PDF file
  - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
  - `flatten` (default=True) : flatten the final PDF
- 
+
 ### `dump_data_fields`
 Read PDF and output form field statistics.
  - `pdf_path` : input PDF file
@@ -78,7 +78,7 @@ out_pdf = pypdftk.concat(['/path/to/cover.pdf', generated_pdf])
 
 ## pdftk path
 
-By default, path is `/usr/bin/pdftk`, but you can override it with the `PDFTK_PATH` environment variable 
+By default, path is `/usr/bin/pdftk`, but you can override it with the `PDFTK_PATH` environment variable
 
 
 ## Licence
