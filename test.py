@@ -5,7 +5,7 @@ from tempfile import mkdtemp
 import pypdftk
 
 TEST_PDF_PATH = 'test_files/python-guide.pdf'
-
+TEST_XFDF_PATH = 'test_files/simple.xfdf'
 
 class TestPyPDFTK(unittest.TestCase):
     def test_get_num_pages(self):
@@ -16,8 +16,20 @@ class TestPyPDFTK(unittest.TestCase):
     def test_fill_form(self):
         pass
 
-    def test_concat(self):
+    @unittest.skip('Not implemented yet')
+    def dump_data_fields(self):
         pass
+
+    @unittest.skip('Not implemented yet')
+    def text_fill_form(self):
+        # (pdf_path, datas={}, out_file=None, flatten=True):
+        pass
+
+    def test_concat(self):
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        output_file = pypdftk.concat([TEST_PDF_PATH, TEST_PDF_PATH, TEST_PDF_PATH])
+        concat_total_pages = pypdftk.get_num_pages(output_file)
+        self.assertEqual(total_pages * 3, concat_total_pages)
 
     def test_split(self):
         total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
@@ -36,9 +48,15 @@ class TestPyPDFTK(unittest.TestCase):
             out_path = os.path.join(output_dir, os.path.basename(p))
             self.assertTrue(out_path)
 
-    @unittest.skip('Not implemented yet')
     def test_gen_xfdf(self):
-        pass
+        sample_data = {
+            "name": "juju",
+            "city": "Paris"
+        }
+        xfdf_path = pypdftk.gen_xfdf(sample_data)
+        xfdf = "".join(open(xfdf_path, 'r').readlines())
+        expected = "".join(open(TEST_XFDF_PATH, 'r').readlines())
+        self.assertEqual(xfdf, expected)
 
     def test_replace_page_at_begin(self):
         total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
