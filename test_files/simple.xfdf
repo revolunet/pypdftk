@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve">
+    <fields>
+        <field name="city"><value>Paris</value></field>
+        <field name="name"><value>juju</value></field>
+    </fields>
+</xfdf>

@@ -1,0 +1,149 @@
+[
+  {
+    "FieldFlags": "0",
+    "FieldNameAlt": "First name",
+    "FieldName": "Given Name Text Box",
+    "FieldType": "Text",
+    "FieldJustification": "Left",
+    "FieldMaxLength": "40",
+    "FieldValue": ""
+  },
+  {
+    "FieldFlags": "0",
+    "FieldNameAlt": "Last name",
+    "FieldName": "Family Name Text Box",
+    "FieldType": "Text",
+    "FieldJustification": "Left",
+    "FieldMaxLength": "40",
+    "FieldValue": ""
+  },
+  {
+    "FieldFlags": "0",
+    "FieldNameAlt": "House and floor",
+    "FieldName": "House nr Text Box",
+    "FieldType": "Text",
+    "FieldJustification": "Left",
+    "FieldMaxLength": "20",
+    "FieldValue": ""
+  },
+  {
+    "FieldFlags": "0",
+    "FieldName": "Address 2 Text Box",
+    "FieldType": "Text",
+    "FieldJustification": "Left",
+    "FieldMaxLength": "40",
+    "FieldValue": ""
+  },
+  {
+    "FieldFlags": "0",
+    "FieldName": "Postcode Text Box",
+    "FieldType": "Text",
+    "FieldJustification": "Left",
+    "FieldMaxLength": "20",
+    "FieldValue": ""
+  },
+  {
+    "FieldStateOption": "Sweden",
+    "FieldFlags": "393216",
+    "FieldNameAlt": "Use selection or write country name",
+    "FieldName": "Country Combo Box",
+    "FieldType": "Choice",
+    "FieldJustification": "Left",
+    "FieldValue": ""
+  },
+  {
+    "FieldFlags": "0",
+    "FieldNameAlt": "Value from 40 to 250 cm",
+    "FieldName": "Height Formatted Field",
+    "FieldType": "Text",
+    "FieldJustification": "Left",
+    "FieldMaxLength": "20",
+    "FieldValueDefault": "150",
+    "FieldValue": "150"
+  },
+  {
+    "FieldFlags": "0",
+    "FieldName": "City Text Box",
+    "FieldType": "Text",
+    "FieldJustification": "Left",
+    "FieldMaxLength": "40",
+    "FieldValue": ""
+  },
+  {
+    "FieldStateOption": "Yes",
+    "FieldFlags": "0",
+    "FieldNameAlt": "Car driving license",
+    "FieldName": "Driving License Check Box",
+    "FieldType": "Button",
+    "FieldJustification": "Left",
+    "FieldValue": "Off"
+  },
+  {
+    "FieldStateOption": "Yellow",
+    "FieldFlags": "131072",
+    "FieldNameAlt": "Select from colour spectrum",
+    "FieldName": "Favourite Colour List Box",
+    "FieldType": "Choice",
+    "FieldJustification": "Left",
+    "FieldValueDefault": "Red",
+    "FieldValue": "Red"
+  },
+  {
+    "FieldStateOption": "Yes",
+    "FieldFlags": "0",
+    "FieldName": "Language 1 Check Box",
+    "FieldType": "Button",
+    "FieldJustification": "Left",
+    "FieldValue": "Off"
+  },
+  {
+    "FieldStateOption": "Yes",
+    "FieldFlags": "0",
+    "FieldName": "Language 2 Check Box",
+    "FieldType": "Button",
+    "FieldJustification": "Left",
+    "FieldValue": "Yes"
+  },
+  {
+    "FieldStateOption": "Yes",
+    "FieldFlags": "0",
+    "FieldName": "Language 3 Check Box",
+    "FieldType": "Button",
+    "FieldJustification": "Left",
+    "FieldValue": "Off"
+  },
+  {
+    "FieldStateOption": "Yes",
+    "FieldFlags": "0",
+    "FieldName": "Language 4 Check Box",
+    "FieldType": "Button",
+    "FieldJustification": "Left",
+    "FieldValue": "Off"
+  },
+  {
+    "FieldStateOption": "Yes",
+    "FieldFlags": "0",
+    "FieldName": "Language 5 Check Box",
+    "FieldType": "Button",
+    "FieldJustification": "Left",
+    "FieldValue": "Off"
+  },
+  {
+    "FieldStateOption": "Woman",
+    "FieldFlags": "131072",
+    "FieldNameAlt": "Select from list",
+    "FieldName": "Gender List Box",
+    "FieldType": "Choice",
+    "FieldJustification": "Left",
+    "FieldValueDefault": "Man",
+    "FieldValue": "Man"
+  },
+  {
+    "FieldFlags": "0",
+    "FieldName": "Address 1 Text Box",
+    "FieldType": "Text",
+    "FieldJustification": "Left",
+    "FieldMaxLength": "40",
+    "FieldValue": ""
+  }
+]

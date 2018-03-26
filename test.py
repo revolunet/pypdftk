@@ -1,102 +1,105 @@
 import os
 import unittest
-import tempfile
+import json
+from tempfile import mkdtemp
 
 import pypdftk
 
-TEST_PDF_01_PATH = 'test_files/test_pdf_01.pdf'
-TEST_PDF_02_PATH = 'test_files/test_pdf_02.pdf'
+TEST_PDF_PATH = 'test_files/python-guide.pdf'
+TEST_XPDF_PATH = 'test_files/form.pdf'
+TEST_XPDF_DATA_DUMP = 'test_files/form.json'
+TEST_XPDF_FILLED_PATH = 'test_files/form-filled.pdf'
+TEST_XPDF_FILLED_DATA_DUMP = 'test_files/form-filled.json'
+TEST_XFDF_PATH = 'test_files/simple.xfdf'
+SAMPLE_DATA = {
+    "name": "juju",
+    "city": "Paris"
+}
+SAMPLE_DATA2 = {
+    "Given Name Text Box": "name test",
+    "Language 3 Check Box": "Yes"
+}
 
+def read(path):
+    return "".join(open(path, 'r').readlines())
+
+# json comparison... https://stackoverflow.com/a/25851972/174027
+def ordered(obj):
+    if isinstance(obj, dict):
+        return sorted((k, ordered(v)) for k, v in obj.items())
+    if isinstance(obj, list):
+        return sorted(ordered(x) for x in obj)
+    else:
+        return obj
 
 class TestPyPDFTK(unittest.TestCase):
     def test_get_num_pages(self):
-        num = pypdftk.get_num_pages(TEST_PDF_01_PATH)
+        num = pypdftk.get_num_pages(TEST_PDF_PATH)
         self.assertEqual(num, 129)
 
-    @unittest.skip('Not implemented yet')
     def test_fill_form(self):
-        pass
+        result = pypdftk.fill_form(TEST_XPDF_PATH, datas=SAMPLE_DATA2, flatten=False)
+        result_data = ordered(pypdftk.dump_data_fields(result))
+        expected_data = ordered(json.loads(read(TEST_XPDF_FILLED_DATA_DUMP)))
+        self.assertEqual(result_data, expected_data)
+
+    def test_dump_data_fields(self):
+        result_data = ordered(pypdftk.dump_data_fields(TEST_XPDF_PATH))
+        expected_data = ordered(json.loads(read(TEST_XPDF_DATA_DUMP)))
+        self.assertEqual(result_data, expected_data)
 
     def test_concat(self):
-        files = [TEST_PDF_01_PATH, TEST_PDF_02_PATH]
-        expected_total_pages = pypdftk.get_num_pages(TEST_PDF_01_PATH) + \
-                               pypdftk.get_num_pages(TEST_PDF_02_PATH)
-        temp_pdf = tempfile.mktemp(suffix='.pdf')
-        pypdftk.concat(files, out_file=temp_pdf)
-        self.assertEqual(expected_total_pages, pypdftk.get_num_pages(temp_pdf))
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        output_file = pypdftk.concat([TEST_PDF_PATH, TEST_PDF_PATH, TEST_PDF_PATH])
+        concat_total_pages = pypdftk.get_num_pages(output_file)
+        self.assertEqual(total_pages * 3, concat_total_pages)
 
     def test_split(self):
-        total_pages = pypdftk.get_num_pages(TEST_PDF_01_PATH)
-        paths = pypdftk.split(TEST_PDF_01_PATH)
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        paths = pypdftk.split(TEST_PDF_PATH)
         self.assertEqual(len(paths) - 1, total_pages)
         self.assertTrue('doc_data.txt' in paths[0])
         for p in paths:
             self.assertTrue(os.path.exists(p))
 
     def test_split_output_dir(self):
-        output_dir = tempfile.mkdtemp()
-        total_pages = pypdftk.get_num_pages(TEST_PDF_01_PATH)
-        paths = pypdftk.split(TEST_PDF_01_PATH, out_dir=output_dir)
+        output_dir = mkdtemp()
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        paths = pypdftk.split(TEST_PDF_PATH, out_dir=output_dir)
         self.assertEqual(len(paths) - 1, total_pages)
         for p in paths:
             out_path = os.path.join(output_dir, os.path.basename(p))
             self.assertTrue(out_path)
 
     def test_gen_xfdf(self):
-        output_baseline = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve">
-            <fields>
-                <field name="field_02"><value>value_02</value></field>
-                <field name="field_01"><value>value_01</value></field>
-            </fields>
-        </xfdf>
-        """
-
-        out_file = pypdftk.gen_xfdf({
-            'field_01': 'value_01',
-            'field_02': 'value_02'
-        })
-        with open(out_file) as fd:
-            self.assertEqual(''.join(fd.read().split()),
-                             ''.join(output_baseline.split()))
+        xfdf_path = pypdftk.gen_xfdf(SAMPLE_DATA)
+        xfdf = read(xfdf_path)
+        expected = read(TEST_XFDF_PATH)
+        self.assertEqual(xfdf, expected)
 
     def test_replace_page_at_begin(self):
-        total_pages = pypdftk.get_num_pages(TEST_PDF_01_PATH)
-        pdf_to_insert = TEST_PDF_02_PATH
-        pypdftk.replace_page(TEST_PDF_01_PATH, 1, pdf_to_insert)
-        self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_01_PATH))
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        pdf_to_insert = 'test_files/page_01.pdf'
+        pypdftk.replace_page(TEST_PDF_PATH, 1, pdf_to_insert)
+        self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_PATH))
 
     def test_replace_page_at_middle(self):
-        total_pages = pypdftk.get_num_pages(TEST_PDF_01_PATH)
-        pdf_to_insert = TEST_PDF_02_PATH
-        pypdftk.replace_page(TEST_PDF_01_PATH, 3, pdf_to_insert)
-        self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_01_PATH))
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        pdf_to_insert = 'test_files/page_01.pdf'
+        pypdftk.replace_page(TEST_PDF_PATH, 3, pdf_to_insert)
+        self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_PATH))
 
     def test_replace_page_at_end(self):
-        total_pages = pypdftk.get_num_pages(TEST_PDF_01_PATH)
-        last_page = pypdftk.get_num_pages(TEST_PDF_01_PATH)
-        pdf_to_insert = TEST_PDF_02_PATH
-        pypdftk.replace_page(TEST_PDF_01_PATH, last_page, pdf_to_insert)
-        self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_01_PATH))
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        last_page = pypdftk.get_num_pages(TEST_PDF_PATH)
+        pdf_to_insert = 'test_files/page_01.pdf'
+        pypdftk.replace_page(TEST_PDF_PATH, last_page, pdf_to_insert)
+        self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_PATH))
 
+    @unittest.skip('Not implemented yet')
     def test_stamp(self):
-        temp_pdf = tempfile.mktemp(suffix='.pdf')
-        stamp_path = TEST_PDF_02_PATH
-        pypdftk.stamp(TEST_PDF_01_PATH, stamp_path, output_pdf_path=temp_pdf)
-        self.assertEqual(pypdftk.get_num_pages(TEST_PDF_01_PATH),
-                         pypdftk.get_num_pages(temp_pdf))
+        pass
 
-    def test_compress(self):
-        temp_compressed_pdf = tempfile.mktemp(prefix='compress', suffix='.pdf')
-        pypdftk.compress(TEST_PDF_01_PATH, temp_compressed_pdf)
-        self.assertTrue(os.path.exists(temp_compressed_pdf))
-
-    def test_uncompress(self):
-        temp_uncompressed_pdf = tempfile.mktemp(
-            prefix='uncompress', suffix='.pdf')
-        pypdftk.uncompress(TEST_PDF_01_PATH, temp_uncompressed_pdf)
-        self.assertTrue(os.path.exists(temp_uncompressed_pdf))
 
 if __name__ == '__main__':
     unittest.main()
