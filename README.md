@@ -1,11 +1,9 @@
-pypdftk
-========
+# pypdftk [![circleci](https://circleci.com/gh/revolunet/pypdftk.svg?style=shield&circle-token=78ab3159527f865cf8ee850b3c1c9fcce8ccf631)](https://circleci.com/gh/revolunet/pypdftk) [![travis](https://travis-ci.org/yguarata/pypdftk.svg?branch=master)](https://travis-ci.org/yguarata/pypdftk)
 
 Python module to drive the awesome [pdftk][0] binary.
 
 Proudly brought to you by the [revolunet][1] team and [awesome contributors](https://github.com/revolunet/pypdftk/graphs/contributors)
 
-<img src="https://travis-ci.org/yguarata/pypdftk.svg?branch=master"/>
 
 ## Features
 
@@ -54,18 +52,6 @@ Applies a stamp (from `stamp_pdf_path`) to the PDF file in `pdf_path`. If no `ou
  - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
  - `flatten` (default=True) : flatten the final PDF
 
-<<<<<<< HEAD
-### `[compress | uncompress]`
-    These are only useful when you want to edit PDF code in a text
-    editor like vim or emacs.  Remove PDF page stream compression by
-    applying the uncompress filter. Use the compress filter to
-    restore compression.
- - `pdf_path` : input PDF file
- - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
- - `flatten` (default=True) : flatten the final PDF
-
-=======
->>>>>>> fixed
 ### `dump_data_fields`
 Read PDF and output form field statistics.
  - `pdf_path` : input PDF file
@@ -89,12 +75,7 @@ out_pdf = pypdftk.concat(['/path/to/cover.pdf', generated_pdf])
 
 ## pdftk path
 
-<<<<<<< HEAD
 By default, path is `/usr/bin/pdftk`, but you can override it with the `PDFTK_PATH` environment variable
-=======
-By default, path is `/usr/bin/pdftk`, but you can override it with the `PDFTK_PATH` environment variable
->>>>>>> fixed
-
 
 ## Licence
 This module is released under the permissive [MIT license](http://revolunet.mit-license.org). Your contributions are always welcome.
