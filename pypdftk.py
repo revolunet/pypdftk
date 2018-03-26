@@ -9,9 +9,9 @@ See http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 import logging
 import os
+import shutil
 import subprocess
 import tempfile
-import shutil
 import itertools
 
 log = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ def check_output(*popenargs, **kwargs):
         cmd = kwargs.get("args")
         if cmd is None:
             cmd = popenargs[0]
-        raise subprocess.CalledProcessError(retcode, cmd)
+        raise subprocess.CalledProcessError(retcode, cmd, output=output)
     return output
 
 
@@ -162,10 +162,22 @@ def replace_page(pdf_path, page_number, pdf_to_insert_path):
     '''
     A = 'A=' + pdf_path
     B = 'B=' + pdf_to_insert_path
-    lower_bound = 'A1-' + str(page_number - 1)
-    upper_bound = 'A' + str(page_number + 1) + '-end'
     output_temp = tempfile.mktemp(suffix='.pdf')
-    args = (PDFTK_PATH, A, B, 'cat', lower_bound, 'B', upper_bound, 'output', output_temp)
+
+    if page_number == 1:  # At begin
+        upper_bound = 'A' + str(page_number + 1) + '-end'
+        args = (
+            PDFTK_PATH, A, B, 'cat', 'B', upper_bound, 'output', output_temp)
+    elif page_number == get_num_pages(pdf_path):  # At end
+        lower_bound = 'A1-' + str(page_number - 1)
+        args = (PDFTK_PATH, A, B, 'cat', lower_bound, 'B', 'output', output_temp)
+    else:  # At middle
+        lower_bound = 'A1-' + str(page_number - 1)
+        upper_bound = 'A' + str(page_number + 1) + '-end'
+        args = (
+            PDFTK_PATH, A, B, 'cat', lower_bound, 'B', upper_bound, 'output',
+            output_temp)
+
     run_command(args)
     shutil.copy(output_temp, pdf_path)
     os.remove(output_temp)
