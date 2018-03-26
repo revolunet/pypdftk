@@ -1,29 +1,52 @@
 import os
 import unittest
+import json
 from tempfile import mkdtemp
 
 import pypdftk
 
 TEST_PDF_PATH = 'test_files/python-guide.pdf'
+TEST_XPDF_PATH = 'test_files/form.pdf'
+TEST_XPDF_DATA_DUMP = 'test_files/form.json'
+TEST_XPDF_FILLED_PATH = 'test_files/form-filled.pdf'
+TEST_XPDF_FILLED_DATA_DUMP = 'test_files/form-filled.json'
 TEST_XFDF_PATH = 'test_files/simple.xfdf'
+SAMPLE_DATA = {
+    "name": "juju",
+    "city": "Paris"
+}
+SAMPLE_DATA2 = {
+    "Given Name Text Box": "name test",
+    "Language 3 Check Box": "Yes"
+}
+
+def read(path):
+    return "".join(open(path, 'r').readlines())
+
+# json comparison... https://stackoverflow.com/a/25851972/174027
+def ordered(obj):
+    if isinstance(obj, dict):
+        return sorted((k, ordered(v)) for k, v in obj.items())
+    if isinstance(obj, list):
+        return sorted(ordered(x) for x in obj)
+    else:
+        return obj
 
 class TestPyPDFTK(unittest.TestCase):
     def test_get_num_pages(self):
         num = pypdftk.get_num_pages(TEST_PDF_PATH)
         self.assertEqual(num, 129)
 
-    @unittest.skip('Not implemented yet')
     def test_fill_form(self):
-        pass
+        result = pypdftk.fill_form(TEST_XPDF_PATH, datas=SAMPLE_DATA2, flatten=False)
+        result_data = ordered(pypdftk.dump_data_fields(result))
+        expected_data = ordered(json.loads(read(TEST_XPDF_FILLED_DATA_DUMP)))
+        self.assertEqual(result_data, expected_data)
 
-    @unittest.skip('Not implemented yet')
-    def dump_data_fields(self):
-        pass
-
-    @unittest.skip('Not implemented yet')
-    def text_fill_form(self):
-        # (pdf_path, datas={}, out_file=None, flatten=True):
-        pass
+    def test_dump_data_fields(self):
+        result_data = ordered(pypdftk.dump_data_fields(TEST_XPDF_PATH))
+        expected_data = ordered(json.loads(read(TEST_XPDF_DATA_DUMP)))
+        self.assertEqual(result_data, expected_data)
 
     def test_concat(self):
         total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
@@ -49,13 +72,9 @@ class TestPyPDFTK(unittest.TestCase):
             self.assertTrue(out_path)
 
     def test_gen_xfdf(self):
-        sample_data = {
-            "name": "juju",
-            "city": "Paris"
-        }
-        xfdf_path = pypdftk.gen_xfdf(sample_data)
-        xfdf = "".join(open(xfdf_path, 'r').readlines())
-        expected = "".join(open(TEST_XFDF_PATH, 'r').readlines())
+        xfdf_path = pypdftk.gen_xfdf(SAMPLE_DATA)
+        xfdf = read(xfdf_path)
+        expected = read(TEST_XFDF_PATH)
         self.assertEqual(xfdf, expected)
 
     def test_replace_page_at_begin(self):
