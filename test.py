@@ -1,3 +1,4 @@
+# -*- encoding: UTF-8 -*-
 import os
 import unittest
 import json
@@ -12,8 +13,8 @@ TEST_XPDF_FILLED_PATH = 'test_files/form-filled.pdf'
 TEST_XPDF_FILLED_DATA_DUMP = 'test_files/form-filled.json'
 TEST_XFDF_PATH = 'test_files/simple.xfdf'
 SAMPLE_DATA = {
-    "name": "juju",
-    "city": "Paris"
+    "city": "Paris",
+    "name": "juju"
 }
 SAMPLE_DATA2 = {
     "Given Name Text Box": "name test",
@@ -21,7 +22,10 @@ SAMPLE_DATA2 = {
 }
 
 def read(path):
-    return "".join(open(path, 'r').readlines())
+    fd = open(path, 'r')
+    content = "".join(fd.read().splitlines())
+    fd.close()
+    return content
 
 # json comparison... https://stackoverflow.com/a/25851972/174027
 def ordered(obj):
