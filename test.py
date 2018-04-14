@@ -23,7 +23,7 @@ SAMPLE_DATA2 = {
 
 def read(path):
     fd = open(path, 'r')
-    content = "".join(fd.read().splitlines())
+    content = fd.read()
     fd.close()
     return content
 
