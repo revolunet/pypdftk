@@ -127,7 +127,7 @@ def split(pdf_path, out_dir=None):
     if not out_dir:
         cleanOnFail = True
         out_dir = tempfile.mkdtemp()
-    out_pattern = '%s/page_%%02d.pdf' % out_dir
+    out_pattern = '%s/page_%%05d.pdf' % out_dir
     try:
         run_command((PDFTK_PATH, pdf_path, 'burst', 'output', out_pattern))
     except:
