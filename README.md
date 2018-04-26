@@ -5,6 +5,8 @@ Python module to drive the awesome [pdftk][0] binary.
 Proudly brought to you by the [revolunet][1] team and [awesome contributors](https://github.com/revolunet/pypdftk/graphs/contributors)
 
 
+<img src="https://travis-ci.org/yguarata/pypdftk.svg?branch=master"/>
+
 ## Features
 
 ### `fill_form`
