@@ -94,7 +94,7 @@ def dump_data_fields(pdf_path):
     #    field_data = map(lambda x: x.split(b': ', 1), run_command(cmd, True))
     field_data = map(lambda x: x.decode("utf-8").split(': ', 1), run_command(cmd, True))
     fields = [list(group) for k, group in itertools.groupby(field_data, lambda x: len(x) == 1) if not k]
-    return map(dict, fields)
+    return [dict(f) for f in fields]
 
 def concat(files, out_file=None):
     '''
