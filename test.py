@@ -1,9 +1,7 @@
-# -*- encoding: UTF-8 -*-
 import os
 import unittest
 import json
 from tempfile import mkdtemp
-# Needed for comparison of XFDF XML
 import xml.etree.ElementTree as ET
 
 import pypdftk
