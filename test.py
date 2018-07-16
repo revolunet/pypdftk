@@ -1,8 +1,8 @@
-# -*- encoding: UTF-8 -*-
 import os
 import unittest
 import json
 from tempfile import mkdtemp
+import xml.etree.ElementTree as ET
 
 import pypdftk
 
@@ -45,12 +45,12 @@ class TestPyPDFTK(unittest.TestCase):
         result = pypdftk.fill_form(TEST_XPDF_PATH, datas=SAMPLE_DATA2, flatten=False)
         result_data = ordered(pypdftk.dump_data_fields(result))
         expected_data = ordered(json.loads(read(TEST_XPDF_FILLED_DATA_DUMP)))
-        self.assertEqual(result_data, expected_data)
+        self.assertCountEqual(list(result_data), [dict(i) for i in expected_data])
 
     def test_dump_data_fields(self):
         result_data = ordered(pypdftk.dump_data_fields(TEST_XPDF_PATH))
         expected_data = ordered(json.loads(read(TEST_XPDF_DATA_DUMP)))
-        self.assertEqual(result_data, expected_data)
+        self.assertCountEqual(list(result_data), [dict(i) for i in expected_data])
 
     def test_concat(self):
         total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
@@ -79,7 +79,13 @@ class TestPyPDFTK(unittest.TestCase):
         xfdf_path = pypdftk.gen_xfdf(SAMPLE_DATA)
         xfdf = read(xfdf_path)
         expected = read(TEST_XFDF_PATH)
-        self.assertEqual(xfdf, expected)
+        # XML can have sibling elements in different order. So: 
+        # * Parse the XML, get list of the root's children, convert to string, sort
+        xfdf_standard_order     = [ET.tostring(i) for i in list(ET.fromstring(xfdf).iter())]
+        expected_standard_order = [ET.tostring(i) for i in list(ET.fromstring(expected).iter())]
+        xfdf_standard_order.sort()
+        expected_standard_order.sort()
+        self.assertEqual(xfdf_standard_order, expected_standard_order)
 
     def test_replace_page_at_begin(self):
         total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)

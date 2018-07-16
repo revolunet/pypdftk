@@ -85,7 +85,11 @@ def dump_data_fields(pdf_path):
         Return list of dicts of all fields in a PDF.
     '''
     cmd = "%s %s dump_data_fields" % (PDFTK_PATH, pdf_path)
-    field_data = map(lambda x: x.split(': ', 1), run_command(cmd, True))
+    # Either can return strings with :
+    #    field_data = map(lambda x: x.decode("utf-8").split(': ', 1), run_command(cmd, True))
+    # Or return bytes with : (will break tests)
+    #    field_data = map(lambda x: x.split(b': ', 1), run_command(cmd, True))
+    field_data = map(lambda x: x.decode("utf-8").split(': ', 1), run_command(cmd, True))
     fields = [list(group) for k, group in itertools.groupby(field_data, lambda x: len(x) == 1) if not k]
     return map(dict, fields)
 
@@ -120,7 +124,7 @@ def split(pdf_path, out_dir=None):
     if not out_dir:
         cleanOnFail = True
         out_dir = tempfile.mkdtemp()
-    out_pattern = '%s/page_%%02d.pdf' % out_dir
+    out_pattern = '%s/page_%%06d.pdf' % out_dir
     try:
         run_command((PDFTK_PATH, pdf_path, 'burst', 'output', out_pattern))
     except:
