@@ -103,6 +103,7 @@ def concat(files, out_file=None):
         Return temp file if no out_file provided.
     '''
     cleanOnFail = False
+    handle = None
     if not out_file:
         cleanOnFail = True
         handle, out_file = tempfile.mkstemp()
@@ -117,6 +118,9 @@ def concat(files, out_file=None):
         if cleanOnFail:
             os.remove(out_file)
         raise
+    finally:
+        if handle:
+            os.close(handle)
     return out_file
 
 
@@ -156,6 +160,7 @@ def gen_xfdf(datas={}):
     f = open(out_file, 'wb')
     f.write((tpl.encode('UTF-8')))
     f.close()
+    os.close(handle)
     return out_file
 
 def replace_page(pdf_path, page_number, pdf_to_insert_path):
