@@ -160,7 +160,6 @@ def gen_xfdf(datas={}):
     f = os.fdopen(handle, 'wb')
     f.write((tpl.encode('UTF-8')))
     f.close()
-    os.close(handle)
     return out_file
 
 def replace_page(pdf_path, page_number, pdf_to_insert_path):
