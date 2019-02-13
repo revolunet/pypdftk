@@ -157,7 +157,7 @@ def gen_xfdf(datas={}):
     </fields>
 </xfdf>""" % "\n".join(fields)
     handle, out_file = tempfile.mkstemp()
-    f = open(out_file, 'wb')
+    f = os.fdopen(handle, 'wb')
     f.write((tpl.encode('UTF-8')))
     f.close()
     os.close(handle)
