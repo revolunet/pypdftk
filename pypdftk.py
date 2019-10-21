@@ -84,6 +84,7 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
     os.remove(tmp_fdf)
     return out_file
 
+
 def dump_data_fields(pdf_path):
     '''
         Return list of dicts of all fields in a PDF.
@@ -96,6 +97,7 @@ def dump_data_fields(pdf_path):
     field_data = map(lambda x: x.decode("utf-8").split(': ', 1), run_command(cmd, True))
     fields = [list(group) for k, group in itertools.groupby(field_data, lambda x: len(x) == 1) if not k]
     return [dict(f) for f in fields]
+
 
 def concat(files, out_file=None):
     '''
@@ -145,11 +147,20 @@ def split(pdf_path, out_dir=None):
     return [os.path.join(out_dir, filename) for filename in out_files]
 
 
+def convert_xml_entities(text):
+    ''' Convert xml entities that could mess with XML structure through value inserts '''
+
+    if isinstance(text, str):
+        return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&#039;')
+    else:
+        return text
+    
+
 def gen_xfdf(datas={}):
     ''' Generates a temp XFDF file suited for fill_form function, based on dict input data '''
     fields = []
     for key, value in datas.items():
-        fields.append("""        <field name="%s"><value>%s</value></field>""" % (key, value))
+        fields.append("""        <field name="%s"><value>%s</value></field>""" % (convert_xml_entities(key), convert_xml_entities(value)))
     tpl = """<?xml version="1.0" encoding="UTF-8"?>
 <xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve">
     <fields>
