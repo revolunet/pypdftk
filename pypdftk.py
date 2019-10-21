@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import tempfile
 import itertools
+import six
 
 log = logging.getLogger(__name__)
 
@@ -150,7 +151,11 @@ def split(pdf_path, out_dir=None):
 def convert_xml_entities(text):
     ''' Convert xml entities that could mess with XML structure through value inserts '''
 
-    if isinstance(text, str):
+    if six.PY2:
+        comparison = unicode # Python 2 syntax
+    else:
+        comparison = str # Python 3 syntax
+    if isinstance(text, comparison):
         return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&#039;')
     else:
         return text
