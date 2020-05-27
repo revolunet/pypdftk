@@ -43,7 +43,7 @@
     "FieldValue": ""
   },
   {
-    "FieldStateOption": "Sweden",
+    "FieldStateOption": "Estonia",
     "FieldFlags": "393216",
     "FieldNameAlt": "Use selection or write country name",
     "FieldName": "Country Combo Box",
@@ -70,16 +70,17 @@
     "FieldValue": ""
   },
   {
-    "FieldStateOption": "Yes",
+    "FieldStateOption": "Off",
     "FieldFlags": "0",
     "FieldNameAlt": "Car driving license",
     "FieldName": "Driving License Check Box",
     "FieldType": "Button",
     "FieldJustification": "Left",
+    "FieldValueDefault": "Off",
     "FieldValue": "Off"
   },
   {
-    "FieldStateOption": "Yellow",
+    "FieldStateOption": "Grey",
     "FieldFlags": "131072",
     "FieldNameAlt": "Select from colour spectrum",
     "FieldName": "Favourite Colour List Box",
@@ -89,43 +90,48 @@
     "FieldValue": "Red"
   },
   {
-    "FieldStateOption": "Yes",
+    "FieldStateOption": "Off",
     "FieldFlags": "0",
     "FieldName": "Language 1 Check Box",
     "FieldType": "Button",
     "FieldJustification": "Left",
+    "FieldValueDefault": "Off",
     "FieldValue": "Off"
   },
   {
-    "FieldStateOption": "Yes",
+    "FieldStateOption": "Off",
     "FieldFlags": "0",
     "FieldName": "Language 2 Check Box",
     "FieldType": "Button",
     "FieldJustification": "Left",
+    "FieldValueDefault": "Yes",
     "FieldValue": "Yes"
   },
   {
-    "FieldStateOption": "Yes",
+    "FieldStateOption": "Off",
     "FieldFlags": "0",
     "FieldName": "Language 3 Check Box",
     "FieldType": "Button",
     "FieldJustification": "Left",
+    "FieldValueDefault": "Off",
     "FieldValue": "Yes"
   },
   {
-    "FieldStateOption": "Yes",
+    "FieldStateOption": "Off",
     "FieldFlags": "0",
     "FieldName": "Language 4 Check Box",
     "FieldType": "Button",
     "FieldJustification": "Left",
+    "FieldValueDefault": "Off",
     "FieldValue": "Off"
   },
   {
-    "FieldStateOption": "Yes",
+    "FieldStateOption": "Off",
     "FieldFlags": "0",
     "FieldName": "Language 5 Check Box",
     "FieldType": "Button",
     "FieldJustification": "Left",
+    "FieldValueDefault": "Off",
     "FieldValue": "Off"
   },
   {
