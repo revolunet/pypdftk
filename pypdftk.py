@@ -41,7 +41,7 @@ def check_output(*popenargs, **kwargs):
 def run_command(command, shell=False):
     ''' run a system command and yield output '''
     p = check_output(command, shell=shell)
-    return p.split(b'\n')
+    return p.decode("utf-8").splitlines()
 
 try:
     run_command([PDFTK_PATH])
@@ -52,8 +52,8 @@ except OSError:
 def get_num_pages(pdf_path):
     ''' return number of pages in a given PDF file '''
     for line in run_command([PDFTK_PATH, pdf_path, 'dump_data']):
-        if line.lower().startswith(b'numberofpages'):
-            return int(line.split(b':')[1])
+        if line.lower().startswith('numberofpages'):
+            return int(line.split(':')[1])
     return 0
 
 
@@ -89,11 +89,7 @@ def dump_data_fields(pdf_path):
         Return list of dicts of all fields in a PDF.
     '''
     cmd = "%s %s dump_data_fields" % (PDFTK_PATH, pdf_path)
-    # Either can return strings with :
-    #    field_data = map(lambda x: x.decode("utf-8").split(': ', 1), run_command(cmd, True))
-    # Or return bytes with : (will break tests)
-    #    field_data = map(lambda x: x.split(b': ', 1), run_command(cmd, True))
-    field_data = map(lambda x: x.decode("utf-8").split(': ', 1), run_command(cmd, True))
+    field_data = map(lambda x: x.split(': ', 1), run_command(cmd, True))
     fields = [list(group) for k, group in itertools.groupby(field_data, lambda x: len(x) == 1) if not k]
     return [dict(f) for f in fields]
 
