@@ -5,6 +5,7 @@ setup(
     name='pypdftk',
     description='''Python wrapper for PDFTK''',
     long_description=open('README.md').read(),
+    long_description_content_type="text/markdown",
     version='0.4',
     author='Julien Bouquillon',
     author_email='julien@revolunet.com',
