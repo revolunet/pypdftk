@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 from distutils.core import setup
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+    
 setup(
     name='pypdftk',
     description='''Python wrapper for PDFTK''',
-    long_description=open('README.md').read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
-    version='0.4',
+    version='0.5',
     author='Julien Bouquillon',
     author_email='julien@revolunet.com',
     url='http://github.com/revolunet/pypdftk',
