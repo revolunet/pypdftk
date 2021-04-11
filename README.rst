@@ -110,16 +110,40 @@ Read PDF and output form field statistics.
 
 -  ``pdf_path`` : input PDF file
 
+
 Example
 -------
 
 Fill a PDF model and add a cover page :
 
-\```python import pypdftk
+.. code:: python
 
-datas = { ’first
+   import pypdftk
 
+   datas = {
+       'firstname': 'Julien',
+       'company': 'revolunet',
+       'price': 42
+   }
+   generated_pdf = pypdftk.fill_form('/path/to/model.pdf', datas)
+   out_pdf = pypdftk.concat(['/path/to/cover.pdf', generated_pdf])
+
+pdftk path
+----------
+
+By default, path is ``/usr/bin/pdftk``, but you can override it with the
+``PDFTK_PATH`` environment variable
+
+Licence
+-------
+
+This module is released under the permissive `MIT license`_. Your
+contributions are always welcome.
+
+.. _pdftk: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
+.. _revolunet: http://revolunet.com
 .. _awesome contributors: https://github.com/revolunet/pypdftk/graphs/contributors
+.. _MIT license: http://revolunet.mit-license.org
 
 .. |pypi| image:: https://img.shields.io/pypi/v/pypdftk
    :target: https://pypi.org/project/pypdftk/
