@@ -29,7 +29,6 @@ jobs:
     - name: pypi-publish
       uses: pypa/gh-action-pypi-publish@v1.4.2
       with:
-        user: revolunet
         password: ${{ secrets.PYPI_TOKEN }}
         repository_url: https://github.com/revolunet/pypdftk
         verify_metadata: false
