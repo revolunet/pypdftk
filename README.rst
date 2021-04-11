@@ -1,4 +1,4 @@
-pypdftk |circleci| |travis|
+pypdftk |pypi| |travis|
 ===========================
 
 Python module to drive the awesome [pdftk][0] binary.
@@ -121,7 +121,7 @@ datas = { ’first
 
 .. _awesome contributors: https://github.com/revolunet/pypdftk/graphs/contributors
 
-.. |circleci| image:: https://circleci.com/gh/revolunet/pypdftk.svg?style=shield&circle-token=78ab3159527f865cf8ee850b3c1c9fcce8ccf631
-   :target: https://circleci.com/gh/revolunet/pypdftk
+.. |pypi| image:: https://img.shields.io/pypi/v/pypdftk
+   :target: https://pypi.org/project/pypdftk/
 .. |travis| image:: https://travis-ci.org/yguarata/pypdftk.svg?branch=master
    :target: https://travis-ci.org/yguarata/pypdftk
