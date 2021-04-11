@@ -38,6 +38,18 @@ def ordered(obj):
     else:
         return obj
 
+# Converts a page range list into the number of pages
+def rangeCount(ranges):
+    count = 0
+    for range in ranges:
+        if len(range)==1:
+            count += 1
+        elif len(range)==2:
+            count += abs(range[0]-range[1]) + 1
+        else:
+            raise ValueError(str(range)+" contains more than 2 values")
+    return count
+
 class TestPyPDFTK(unittest.TestCase):
     def test_get_num_pages(self):
         num = pypdftk.get_num_pages(TEST_PDF_PATH)
@@ -59,6 +71,31 @@ class TestPyPDFTK(unittest.TestCase):
         output_file = pypdftk.concat([TEST_PDF_PATH, TEST_PDF_PATH, TEST_PDF_PATH])
         concat_total_pages = pypdftk.get_num_pages(output_file)
         self.assertEqual(total_pages * 3, concat_total_pages)
+
+
+    def test_get_pages_clone(self):
+        total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)
+        output_file = pypdftk.get_pages(TEST_PDF_PATH,[])
+        concat_total_pages = pypdftk.get_num_pages(output_file)
+        self.assertEqual(total_pages, concat_total_pages)
+
+    def test_get_pages_single(self):
+        pageRanges = [[1]]
+        output_file = pypdftk.get_pages(TEST_PDF_PATH,pageRanges)
+        concat_total_pages = pypdftk.get_num_pages(output_file)
+        self.assertEqual(rangeCount(pageRanges), concat_total_pages)
+
+    def test_get_pages_range(self):
+        pageRanges = [[2,5]]
+        output_file = pypdftk.get_pages(TEST_PDF_PATH,pageRanges)
+        concat_total_pages = pypdftk.get_num_pages(output_file)
+        self.assertEqual(rangeCount(pageRanges), concat_total_pages)
+
+    def test_get_pages_single_range(self):
+        pageRanges = [[1],[2,5]]
+        output_file = pypdftk.get_pages(TEST_PDF_PATH,pageRanges)
+        concat_total_pages = pypdftk.get_num_pages(output_file)
+        self.assertEqual(rangeCount(pageRanges), concat_total_pages)
 
     def test_split(self):
         total_pages = pypdftk.get_num_pages(TEST_PDF_PATH)

@@ -56,6 +56,33 @@ def get_num_pages(pdf_path):
             return int(line.split(':')[1])
     return 0
 
+def get_pages(pdf_path, ranges=[], out_file=None):
+    ''' 
+    Concatenate a list of page ranges into one single file
+    Return temp file if no out_file provided.
+    '''
+    cleanOnFail = False
+    handle = None
+    pageRanges = []
+    if not out_file:
+        cleanOnFail = True
+        handle, out_file = tempfile.mkstemp()
+
+    for range in ranges:
+        pageRanges.append("-".join([str(i) for i in range]))
+        
+    args = [PDFTK_PATH, pdf_path, 'cat'] + pageRanges + ['output', out_file]
+    try:
+        run_command(args)
+    except:
+        if cleanOnFail:
+            os.remove(out_file)
+        raise
+    finally:
+        if handle:
+            os.close(handle)
+    return out_file
+
 
 def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
     '''
