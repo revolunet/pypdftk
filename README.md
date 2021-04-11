@@ -19,6 +19,12 @@ Merge multiple PDFs into one single file and returns the output PDF path
  - `files` : list of PDF files to concatenate
  - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
 
+### `get_pages`
+Concatenate a list of page ranges into one single file and returns the output PDF path
+ - `pdf_path` : input PDF
+ - `ranges`  (default=```[]```) : ```[]``` for clone, ```[[2]]``` for extracting 2nd page, ```[[1],[2,5],[3]]``` for concatenating pages 1, 2-5, 3
+ - `out_file` (default=auto) : output PDF path. will use tempfile if not provided
+
 ### `split`
 Split a single PDF in many pages and return a list of pages paths
  - `pdf_path` : input PDF
