@@ -32,4 +32,5 @@ jobs:
         user: revolunet
         password: ${{ secrets.PYPI_TOKEN }}
         repository_url: https://github.com/revolunet/pypdftk
+        verify_metadata: false
         verbose: true
