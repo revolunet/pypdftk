@@ -1,5 +1,5 @@
-pypdftk |pypi| |travis|
-===========================
+pypdftk |pypi| |travis| |githubactions|
+===========================================
 
 Python module to drive the awesome [pdftk][0] binary.
 
@@ -125,3 +125,4 @@ datas = { ’first
    :target: https://pypi.org/project/pypdftk/
 .. |travis| image:: https://travis-ci.org/yguarata/pypdftk.svg?branch=master
    :target: https://travis-ci.org/yguarata/pypdftk
+.. |githubactions| image:: https://github.com/revolunet/pypdftk/actions/workflows/quality.yml/badge.svg
