@@ -43,7 +43,11 @@
     "FieldValue": ""
   },
   {
-    "FieldStateOption": "Estonia",
+    "FieldStateOption": ["Austria", "Belgium", "Britain", "Bulgaria", "Croatia",
+        "Cyprus", "Czech-Republic", "Denmark", "Estonia", "Finland", "France",
+        "Germany", "Greece", "Hungary", "Ireland", "Italy", "Latvia",
+        "Lithuania", "Luxembourg", "Malta", "Netherlands", "Poland", "Portugal",
+        "Romania", "Slovakia", "Slovenia", "Spain", "Sweden"],
     "FieldFlags": "393216",
     "FieldNameAlt": "Use selection or write country name",
     "FieldName": "Country Combo Box",
@@ -70,7 +74,7 @@
     "FieldValue": ""
   },
   {
-    "FieldStateOption": "Off",
+    "FieldStateOption": ["Off", "Yes"],
     "FieldFlags": "0",
     "FieldNameAlt": "Car driving license",
     "FieldName": "Driving License Check Box",
@@ -80,7 +84,7 @@
     "FieldValue": "Off"
   },
   {
-    "FieldStateOption": "Grey",
+    "FieldStateOption": ["Black", "Blue", "Brown", "Green", "Grey", "Orange", "Red", "Violet", "White", "Yellow"],
     "FieldFlags": "131072",
     "FieldNameAlt": "Select from colour spectrum",
     "FieldName": "Favourite Colour List Box",
@@ -90,7 +94,7 @@
     "FieldValue": "Red"
   },
   {
-    "FieldStateOption": "Off",
+    "FieldStateOption": ["Off", "Yes"],
     "FieldFlags": "0",
     "FieldName": "Language 1 Check Box",
     "FieldType": "Button",
@@ -99,7 +103,7 @@
     "FieldValue": "Off"
   },
   {
-    "FieldStateOption": "Off",
+    "FieldStateOption": ["Off", "Yes"],
     "FieldFlags": "0",
     "FieldName": "Language 2 Check Box",
     "FieldType": "Button",
@@ -108,7 +112,7 @@
     "FieldValue": "Yes"
   },
   {
-    "FieldStateOption": "Off",
+    "FieldStateOption": ["Off", "Yes"],
     "FieldFlags": "0",
     "FieldName": "Language 3 Check Box",
     "FieldType": "Button",
@@ -117,7 +121,7 @@
     "FieldValue": "Yes"
   },
   {
-    "FieldStateOption": "Off",
+    "FieldStateOption": ["Off", "Yes"],
     "FieldFlags": "0",
     "FieldName": "Language 4 Check Box",
     "FieldType": "Button",
@@ -126,7 +130,7 @@
     "FieldValue": "Off"
   },
   {
-    "FieldStateOption": "Off",
+    "FieldStateOption": ["Off", "Yes"],
     "FieldFlags": "0",
     "FieldName": "Language 5 Check Box",
     "FieldType": "Button",
@@ -135,7 +139,7 @@
     "FieldValue": "Off"
   },
   {
-    "FieldStateOption": "Woman",
+    "FieldStateOption": ["Man", "Woman"],
     "FieldFlags": "131072",
     "FieldNameAlt": "Select from list",
     "FieldName": "Gender List Box",
