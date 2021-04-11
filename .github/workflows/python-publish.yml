@@ -23,10 +23,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install setuptools wheel twine
-    - name: Build and publish
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      run: |
-        python setup.py sdist bdist_wheel
-        twine upload dist/* --verbose
+    - name: pypi-publish
+      uses: pypa/gh-action-pypi-publish@v1.4.2
+      with:
+        user: revolunet
+        password: ${{ secrets.PYPI_TOKEN }}
+        repository_url: https://github.com/revolunet/pypdftk
+        verbose: true
