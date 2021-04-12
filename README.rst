@@ -18,6 +18,7 @@ Fill a PDF with given data and returns the output PDF path
 -  ``out_file`` (default=auto) : output PDF path. will use tempfile if
    not provided
 -  ``flatten`` (default=True) : flatten the final PDF
+-  ``drop_xfa`` (default=False) : omit XFA data from the output PDF
 
 ``concat``
 ~~~~~~~~~~
