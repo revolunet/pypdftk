@@ -84,7 +84,7 @@ def get_pages(pdf_path, ranges=[], out_file=None):
     return out_file
 
 
-def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
+def fill_form(pdf_path, datas={}, out_file=None, flatten=True, drop_xfa=False):
     '''
         Fills a PDF form with given dict input data.
         Return temp file if no out_file provided.
@@ -99,6 +99,8 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
     cmd = "%s %s fill_form %s output %s" % (PDFTK_PATH, pdf_path, tmp_fdf, out_file)
     if flatten:
         cmd += ' flatten'
+    if drop_xfa:
+        cmd += ' drop_xfa'
     try:
         run_command(cmd, True)
     except:
