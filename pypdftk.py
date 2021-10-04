@@ -113,6 +113,33 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True, drop_xfa=False):
     os.remove(tmp_fdf)
     return out_file
 
+def flatten_only(pdf_path, out_file=None, flatten=True, drop_xfa=True):
+    '''
+        Flattens a PDF.
+        Return temp file if no out_file provided.
+    '''
+    cleanOnFail = False
+    handle = None
+    if not out_file:
+        cleanOnFail = True
+        handle, out_file = tempfile.mkstemp()
+
+    cmd = "%s %s output %s" % (PDFTK_PATH, pdf_path, out_file)
+    if flatten:
+        cmd += ' flatten'
+    if drop_xfa:
+        cmd += ' drop_xfa'
+    try:
+        run_command(cmd, True)
+    except:
+        if cleanOnFail:
+            os.remove(out_file)
+        raise
+    finally:
+        if handle:
+            os.close(handle)
+    return out_file
+
 def dump_data_fields(pdf_path, add_id=False):
     '''
         Return list of dicts of all fields in a PDF.
