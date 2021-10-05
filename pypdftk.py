@@ -13,7 +13,7 @@ import shutil
 import subprocess
 import tempfile
 import itertools
-import six
+import html as py_html
 
 log = logging.getLogger(__name__)
 
@@ -151,12 +151,8 @@ def split(pdf_path, out_dir=None):
 def convert_xml_entities(text):
     ''' Convert xml entities that could mess with XML structure through value inserts '''
 
-    if six.PY2:
-        comparison = unicode # Python 2 syntax
-    else:
-        comparison = str # Python 3 syntax
-    if isinstance(text, comparison):
-        return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&#039;')
+    if isinstance(text, str):
+        return py_html.escape(text, quote=True)
     else:
         return text
     
@@ -165,7 +161,8 @@ def gen_xfdf(datas={}):
     ''' Generates a temp XFDF file suited for fill_form function, based on dict input data '''
     fields = []
     for key, value in datas.items():
-        fields.append("""        <field name="%s"><value>%s</value></field>""" % (convert_xml_entities(key), convert_xml_entities(value)))
+        if len(key) > 0 and key[0] != '_':
+            fields.append("""        <field name="%s"><value>%s</value></field>""" % (convert_xml_entities(key), convert_xml_entities(value)))
     tpl = """<?xml version="1.0" encoding="UTF-8"?>
 <xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve">
     <fields>
