@@ -305,3 +305,23 @@ def uncompress(pdf_path, out_file=None, flatten=True):
     '''
 
     return pdftk_cmd_util(pdf_path, "uncompress", out_file, flatten)
+
+def dump_data(pdf_path, out_file=None):
+    '''
+    Reads a single input PDF file and returns its metadata, bookmarks
+    (a/k/a outlines), page metrics (media, rotation and labels) and
+    other data
+
+    :param pdf_path: input PDF file
+    :param out_file: (default=None) : data will also be written to this file if provided
+    :return: dumped_data
+    '''
+    info_data = run_command([PDFTK_PATH, pdf_path, 'dump_data'])
+    if out_file:
+        with open(out_file, 'w') as f:
+            f.writelines(info_data)
+
+    return "\n".join(info_data)
+
+def update_info(pdf_path, info_data, out_file):
+    run_command([PDFTK_PATH, pdf_path, 'update_info', info_data, 'output', out_file])

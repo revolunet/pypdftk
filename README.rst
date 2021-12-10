@@ -110,6 +110,25 @@ Read PDF and output form field statistics.
 
 -  ``pdf_path`` : input PDF file
 
+``dump_data``
+~~~~~~~~~~~~~~~~~~~~
+
+Read PDF and output metadata, bookmarks, page metrics.
+
+-  ``pdf_path`` : input PDF file
+-  ``out_file`` (default=None) : text file containing dumped data
+
+
+``update_info``
+~~~~~~~~~~~~~~~~~~~~
+
+Read PDF ``pdf_path``, update metadata according to ``info_data`` and
+write the finale PDF to ``out_file``.
+
+-  ``pdf_path`` : input PDF file
+-  ``info_data`` : text file containing new info data
+-  ``out_file`` : output PDF file
+
 
 Example
 -------
