@@ -145,6 +145,64 @@ class TestPyPDFTK(unittest.TestCase):
         pypdftk.replace_page(TEST_PDF_PATH, last_page, pdf_to_insert)
         self.assertEqual(total_pages, pypdftk.get_num_pages(TEST_PDF_PATH))
 
+    def test_dump_data(self):
+        form_info_data = """InfoBegin
+InfoKey: Keywords
+InfoValue: PDF Form
+InfoBegin
+InfoKey: Creator
+InfoValue: Writer
+InfoBegin
+InfoKey: CreationDate
+InfoValue: D:20130629204853+02&apos;00&apos;
+InfoBegin
+InfoKey: Producer
+InfoValue: OpenOffice.org 3.4
+InfoBegin
+InfoKey: Title
+InfoValue: PDF Form Example
+PdfID0: 5e0a553555622a0516e9877ca55217a6
+PdfID1: 5e0a553555622a0516e9877ca55217a6
+NumberOfPages: 1
+PageMediaBegin
+PageMediaNumber: 1
+PageMediaRotation: 0
+PageMediaRect: 0 0 595 842
+PageMediaDimensions: 595 842"""
+        dumped_data = pypdftk.dump_data('test_files/form.pdf')
+        self.assertEqual(dumped_data, form_info_data)
+
+    def test_update_info(self):
+        form_info_data = """InfoBegin
+InfoKey: Keywords
+InfoValue: My fancy form
+InfoBegin
+InfoKey: Creator
+InfoValue: Ghostwriter
+InfoBegin
+InfoKey: CreationDate
+InfoValue: D:20210101204853+02&apos;00&apos;
+InfoBegin
+InfoKey: Producer
+InfoValue: PDFTK
+InfoBegin
+InfoKey: Title
+InfoValue: Form with updated metadata
+PdfID0: 5e0a553555622a0516e9877ca55217a6
+PdfID1: 5e0a553555622a0516e9877ca55217a6
+NumberOfPages: 1
+PageMediaBegin
+PageMediaNumber: 1
+PageMediaRotation: 0
+PageMediaRect: 0 0 595 842
+PageMediaDimensions: 595 842"""
+
+        with open("test_files/form_info_data.txt", 'w') as f:
+            f.write(form_info_data)
+        pypdftk.update_info('test_files/form.pdf', 'test_files/form_info_data.txt', 'test_files/form_updated.pdf')
+        dumped_data = pypdftk.dump_data('test_files/form_updated.pdf')
+        self.assertEqual(dumped_data, form_info_data)
+
     @unittest.skip('Not implemented yet')
     def test_stamp(self):
         pass
