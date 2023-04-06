@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import tempfile
 import itertools
+import html as py_html
 
 log = logging.getLogger(__name__)
 
@@ -140,6 +141,7 @@ def dump_data_fields(pdf_path, add_id=False):
         field_data.append(d)  # Finally, add the dictionary for this field to the big container.
     return field_data
 
+
 def concat(files, out_file=None):
     '''
         Merge multiples PDF files.
@@ -188,11 +190,21 @@ def split(pdf_path, out_dir=None):
     return [os.path.join(out_dir, filename) for filename in out_files]
 
 
+def convert_xml_entities(text):
+    ''' Convert xml entities that could mess with XML structure through value inserts '''
+
+    if isinstance(text, str):
+        return py_html.escape(text, quote=True)
+    else:
+        return text
+    
+
 def gen_xfdf(datas={}):
     ''' Generates a temp XFDF file suited for fill_form function, based on dict input data '''
     fields = []
     for key, value in datas.items():
-        fields.append("""        <field name="%s"><value>%s</value></field>""" % (key, value))
+        if len(key) > 0 and key[0] != '_':
+            fields.append("""        <field name="%s"><value>%s</value></field>""" % (convert_xml_entities(key), convert_xml_entities(value)))
     tpl = """<?xml version="1.0" encoding="UTF-8"?>
 <xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve">
     <fields>
