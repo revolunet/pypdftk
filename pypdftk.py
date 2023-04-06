@@ -42,7 +42,7 @@ def check_output(*popenargs, **kwargs):
 def run_command(command, shell=False):
     ''' run a system command and yield output '''
     p = check_output(command, shell=shell)
-    return p.split(b'\n')
+    return p.decode("utf-8").splitlines()
 
 try:
     run_command([PDFTK_PATH])
@@ -53,12 +53,39 @@ except OSError:
 def get_num_pages(pdf_path):
     ''' return number of pages in a given PDF file '''
     for line in run_command([PDFTK_PATH, pdf_path, 'dump_data']):
-        if line.lower().startswith(b'numberofpages'):
-            return int(line.split(b':')[1])
+        if line.lower().startswith('numberofpages'):
+            return int(line.split(':')[1])
     return 0
 
+def get_pages(pdf_path, ranges=[], out_file=None):
+    ''' 
+    Concatenate a list of page ranges into one single file
+    Return temp file if no out_file provided.
+    '''
+    cleanOnFail = False
+    handle = None
+    pageRanges = []
+    if not out_file:
+        cleanOnFail = True
+        handle, out_file = tempfile.mkstemp()
 
-def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
+    for range in ranges:
+        pageRanges.append("-".join([str(i) for i in range]))
+        
+    args = [PDFTK_PATH, pdf_path, 'cat'] + pageRanges + ['output', out_file]
+    try:
+        run_command(args)
+    except:
+        if cleanOnFail:
+            os.remove(out_file)
+        raise
+    finally:
+        if handle:
+            os.close(handle)
+    return out_file
+
+
+def fill_form(pdf_path, datas={}, out_file=None, flatten=True, drop_xfa=False):
     '''
         Fills a PDF form with given dict input data.
         Return temp file if no out_file provided.
@@ -73,6 +100,8 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
     cmd = "%s %s fill_form %s output %s" % (PDFTK_PATH, pdf_path, tmp_fdf, out_file)
     if flatten:
         cmd += ' flatten'
+    if drop_xfa:
+        cmd += ' drop_xfa'
     try:
         run_command(cmd, True)
     except:
@@ -85,19 +114,32 @@ def fill_form(pdf_path, datas={}, out_file=None, flatten=True):
     os.remove(tmp_fdf)
     return out_file
 
-
-def dump_data_fields(pdf_path):
+def dump_data_fields(pdf_path, add_id=False):
     '''
         Return list of dicts of all fields in a PDF.
+        If multiple values with the same key are provided for some fields (like
+        FieldStateOption), the data for that key will be a list.
+        If id is True, a unique numeric ID will be added for each PDF field.
     '''
     cmd = "%s %s dump_data_fields" % (PDFTK_PATH, pdf_path)
-    # Either can return strings with :
-    #    field_data = map(lambda x: x.decode("utf-8").split(': ', 1), run_command(cmd, True))
-    # Or return bytes with : (will break tests)
-    #    field_data = map(lambda x: x.split(b': ', 1), run_command(cmd, True))
-    field_data = map(lambda x: x.decode("utf-8").split(': ', 1), run_command(cmd, True))
+    field_data = map(lambda x: x.split(': ', 1), run_command(cmd, True))
     fields = [list(group) for k, group in itertools.groupby(field_data, lambda x: len(x) == 1) if not k]
-    return [dict(f) for f in fields]
+    field_data = []  # Container for the whole dataset
+    for i, field in enumerate(fields):  # Iterate over datasets for each PDF field.
+        d = {}  # Use a dictionary as a container for the data from one PDF field.
+        if add_id:
+            d = {'id': i}
+        for i in sorted(field):  # Sort the attributes of the PDF field, then loop through them.
+            # Each item i has 2 elements: i[0] is the key (attribute name), i[1] is the data (value).
+            if i[0] in d:  # If the key is already present in the dictionary...
+                if isinstance(d[i[0]], list):  # ...and the value is already a list...
+                    d[i[0]].append(i[1])  # ...just append to it.
+                else:  # Otherwise (if the value isn't already a list)...
+                    d[i[0]] = [ d[i[0]], i[1] ]  # ...create a new list with the original and new values.
+            else:  # Otherwise (the key isn't already present in the dictionary)...
+                d[i[0]] = i[1]  # ...simply add it to the dictionary.
+        field_data.append(d)  # Finally, add the dictionary for this field to the big container.
+    return field_data
 
 
 def concat(files, out_file=None):
